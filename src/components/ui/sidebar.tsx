@@ -467,6 +467,8 @@ const SidebarGroupAction = React.forwardRef<
         "peer-data-[size=default]/menu-button:top-1.5",
         "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
+        showOnHover &&
+          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
         className
       )}
       {...props}
@@ -571,7 +573,7 @@ const SidebarMenuButton = React.forwardRef<
         className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
         {...props}
       >
-        {children}
+        <React.Fragment>{children}</React.Fragment>
       </Comp>
     );
 
@@ -585,18 +587,22 @@ const SidebarMenuButton = React.forwardRef<
       };
     }
 
+    const renderButton = () => (
+      <TooltipTrigger asChild>
+        {button}
+      </TooltipTrigger>
+    );
+
     return (
-      <React.Fragment>
-        <Tooltip>
-          <TooltipTrigger asChild>{button}</TooltipTrigger>
-          <TooltipContent
-            side="right"
-            align="center"
-            hidden={state !== "collapsed" || isMobile}
-            {...tooltip}
-          />
-        </Tooltip>
-      </React.Fragment>
+      <Tooltip>
+        {asChild ? renderButton() : button}
+        <TooltipContent
+          side="right"
+          align="center"
+          hidden={state !== "collapsed" || isMobile}
+          {...tooltip}
+        />
+      </Tooltip>
     );
   }
 )
