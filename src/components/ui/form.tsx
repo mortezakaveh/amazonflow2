@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label"
 const Form = FormProvider
 
 type FormFieldContextValue<
-  TFieldValues extends FieldValues = FieldValues,
+  TFieldValues extends FieldValues = FieldValues>,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = {
   name: TName
@@ -106,7 +106,7 @@ FormLabel.displayName = "FormLabel"
 const FormControl = React.forwardRef<
   React.ElementRef<typeof Slot>,
   React.ComponentPropsWithoutRef<typeof Slot>
->(({ ...props }, ref) => {
+>(({ children, ...props }, ref) => {
   const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
 
   return (
@@ -120,7 +120,10 @@ const FormControl = React.forwardRef<
       }
       aria-invalid={!!error}
       {...props}
-    />
+    >
+      {/* Wrap children in a React.Fragment to ensure only one child is passed to Slot */}
+      <React.Fragment>{children}</React.Fragment>
+    </Slot>
   )
 })
 FormControl.displayName = "FormControl"

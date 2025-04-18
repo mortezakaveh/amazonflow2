@@ -1,1 +1,2 @@
-// Flows will be imported for their side effects in this file.
+import '@/ai/flows/generate-product-banner.ts';
+import '@/ai/flows/generate-social-media-caption.ts';
